@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import WeatherCard from "./WeatherCard";
 import WeatherStats from "./WeatherStats";
 import { useState } from "react";
+import Error from "./Error";
 const FormWeather = () => {
   const {
     register,
@@ -32,8 +33,8 @@ const FormWeather = () => {
       }
       console.log(response);
     } catch (error) {
-      console.error(error)
-      alert('Ocurrio un error, vuelve a intentarlo en unos minutos')
+      console.error(error);
+      alert("Ocurrio un error, vuelve a intentarlo en unos minutos");
     }
   };
 
@@ -70,25 +71,30 @@ const FormWeather = () => {
           Buscar
         </button>
       </form>
-      <WeatherCard
-        city="Madrid"
-        country="España"
-        date="Lunes, 12 de Junio"
-        temp={24}
-        desc="Parcialmente Nublado"
-        icon="https://cdn.weatherapi.com/weather/64x64/day/116.png"
-      />
-
-      <WeatherStats
-        max={28}
-        min={16}
-        humidity={45}
-        pressure={1013}
-        uv="6 - Alto"
-        wind="12 km/h Noroeste (NW)"
-        visibility="10 km"
-        precipitation="0 mm"
-      />
+      {Object.keys(climaData).length > 0 ? (
+        <>
+          <WeatherCard
+            city={climaData.name}
+            country={climaData.sys.country}
+            date="Lunes, 12 de Junio"
+            temp={24}
+            desc="Parcialmente Nublado"
+            icon="https://cdn.weatherapi.com/weather/64x64/day/116.png"
+          />{" "}
+          <WeatherStats
+            max={28}
+            min={16}
+            humidity={45}
+            pressure={1013}
+            uv="6 - Alto"
+            wind="12 km/h Noroeste (NW)"
+            visibility="10 km"
+            precipitation="0 mm"
+          />{" "}
+        </>
+      ) : (
+        <Error />
+      )}
     </>
   );
 };
