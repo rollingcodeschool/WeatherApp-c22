@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import WeatherCard from "./WeatherCard";
 import WeatherStats from "./WeatherStats";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Error from "./Error";
 const FormWeather = () => {
   const {
@@ -16,6 +16,10 @@ const FormWeather = () => {
     consultarAPI(data.city, data.country);
   };
   const api = import.meta.env.VITE_WEATHER_API_KEY;
+
+  useEffect(()=>{
+    consultarAPI('San Miguel de tucumán','AR')
+  },[])
 
   const consultarAPI = async (city, country) => {
     try {
@@ -77,15 +81,15 @@ const FormWeather = () => {
             city={climaData.name}
             country={climaData.sys.country}
             date="Lunes, 12 de Junio"
-            temp={24}
-            desc="Parcialmente Nublado"
-            icon="https://cdn.weatherapi.com/weather/64x64/day/116.png"
+            temp={climaData.main.temp}
+            desc={climaData.weather[0].description}
+            icon={`https://openweathermap.org/img/wn/${climaData.weather[0].icon}@2x.png`}
           />{" "}
           <WeatherStats
-            max={28}
-            min={16}
-            humidity={45}
-            pressure={1013}
+            max={climaData.main.temp_max}
+            min={climaData.main.temp_min}
+            humidity={climaData.main.humidity}
+            pressure={climaData.main.pressure}
             uv="6 - Alto"
             wind="12 km/h Noroeste (NW)"
             visibility="10 km"
